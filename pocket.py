@@ -25,7 +25,7 @@ def error_rate(x, y, w):
     return float(rate) / perceptron_score.shape[1]
 
 
-def pocket(x, y, update=50):
+def pocket(x, y, update=50, pocket=True):
 
     w = np.zeros(shape=(1, 5))
     w_pocket = np.zeros(shape=(1, 5))
@@ -48,7 +48,10 @@ def pocket(x, y, update=50):
                     w_pocket = w
                     error_pocket = error
                 break
-    return w_pocket
+    if pocket:
+        return w_pocket
+    else:
+        return w
 
 
 def main():
@@ -65,14 +68,25 @@ def main():
     test_x = np.vstack((np.ones(test_x.shape[1]), test_x))
     test_y = test[:, 4:5]
 
-    iterate_number = 10
+    iterate_number = 2000
     total_rate = 0
 
-    for i in range(iterate_number):
-        w_pocket = pocket(train_x, train_y)
-        total_rate += error_rate(test_x, test_y, w_pocket)
+    # Q18
+    # for i in range(iterate_number):
+    #     w_pocket = pocket(train_x, train_y)
+    #     total_rate += error_rate(test_x, test_y, w_pocket)
+    # print float(total_rate) / iterate_number
 
-    print float(total_rate) / iterate_number
+    # Q19
+    # for i in range(iterate_number):
+    #     w_pocket = pocket(train_x, train_y, False)
+    #     total_rate += error_rate(test_x, test_y, w_pocket)
+    # print float(total_rate) / iterate_number
 
+    # # Q20
+    # for i in range(iterate_number):
+    #     w_pocket = pocket(train_x, train_y, 100)
+    #     total_rate += error_rate(test_x, test_y, w_pocket)
+    # print float(total_rate) / iterate_number
 if __name__ == '__main__':
     main()
