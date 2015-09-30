@@ -1,5 +1,11 @@
+# X(5,500)
+# Y(500,1)
+# W(1,5)
+
 import numpy as np
 import random
+
+FILE_NAME = "perceptron_hw1.dat"
 
 
 def label(score):
@@ -13,7 +19,7 @@ def perceptron(x, y, w, count, rand=False, alpha=1):
 
     count[0] = 0
     has_error = False
-    idx = 0
+    range_idx = 0
     col_idx = 0
     col_number = x.shape[1]
     col_range = range(col_number) if not rand \
@@ -21,13 +27,13 @@ def perceptron(x, y, w, count, rand=False, alpha=1):
     update = 0
 
     while True:
-        if idx == col_number:
+        if range_idx == col_number:
             if not has_error:
                 break
-            idx = 0
+            range_idx = 0
             has_error = False
 
-        col_idx = col_range[idx]
+        col_idx = col_range[range_idx]
 
         perceptron_score = np.dot(w, x[:, col_idx])
         sign_result = label(perceptron_score)
@@ -38,12 +44,12 @@ def perceptron(x, y, w, count, rand=False, alpha=1):
             w += alpha * np.dot(x[:, col_idx], y[col_idx]).transpose()
 
         count[0] += 1
-        idx += 1
+        range_idx += 1
     return update
 
 
 def main():
-    data = np.loadtxt("machine_learning_hw1.dat")
+    data = np.loadtxt(FILE_NAME)
     data = np.asmatrix(data)
 
     x = data[:, :4].transpose()
@@ -52,9 +58,9 @@ def main():
     w = np.zeros(shape=(1, 5))
 
     # Q15
-    # count = [0]
-    # print "1:Update Count is:", perceptron(x, y, w, count)
-    # print "1:Iterative Count is:", count[0]
+    count = [0]
+    print "1:Update Count is:", perceptron(x, y, w, count)
+    print "1:Iterative Count is:", count[0]
 
     # Q16
     # count = [0]
