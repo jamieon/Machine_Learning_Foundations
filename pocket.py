@@ -41,10 +41,13 @@ def pocket(x, y, update=50):
 
         for col_idx in col_range:
             perceptron_score = w * x[:, col_idx]
-            sign_result = label(perceptron_score)
-
-            if sign_result != y[col_idx, 0]:
-                w += (x[:, col_idx] * y[col_idx, 0]).transpose()
+            if label(perceptron_score) != y[col_idx, 0]:
+                # print "1:", col_idx, ":", x[:, col_idx].transpose(), y[col_idx, 0], w
+                # right version
+                w = w + (x[:, col_idx] * y[col_idx, 0]).transpose()
+                # wrong version
+                # w += (x[:, col_idx] * y[col_idx, 0]).transpose()
+                # print "2:", col_idx, ":", x[:, col_idx].transpose(), y[col_idx, 0], w
                 error = error_rate(x, y, w)
                 if error < error_pocket:
                     w_pocket = w
@@ -68,26 +71,22 @@ def main():
     test_y = test[:, 4:5]
 
     iterate_number = 10
-    average_rate = 0
-
-    w = np.zeros(shape=(1, 5))
-    w[0, 0] = 1
-    w[0, 1] = -2.353607
-    w[0, 2] = -3.118294
-    w[0, 3] = -1.2135696
-    w[0, 4] = 3.117215
-    print error_rate(test_x, test_y, w)
-
-    # for i in range(iterate_number):
-    #     w_pocket = pocket(train_x, train_y)
-    #     average_rate += error_rate(test_x, test_y, w_pocket)
-
-    # print float(average_rate)
+    total_rate = 0
 
     # w = np.zeros(shape=(1, 5))
-    # print error_rate(train_x, train_y, w)
+    # w += (train_x[:, 0] * train_y[0, 0]).transpose()
+    # print w
     # w = np.zeros(shape=(1, 5))
-    # print error_rate(test_x, test_y, w)
+    # w = w + (train_x[:, 0] * train_y[0, 0]).transpose()
+    # print w
+
+    for i in range(iterate_number):
+        w_pocket = pocket(train_x, train_y)
+        total_rate += error_rate(test_x, test_y, w_pocket)
+
+    print float(total_rate) / iterate_number
+
+    # print train_x[:, 149].transpose()
 
 if __name__ == '__main__':
     main()

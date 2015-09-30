@@ -41,7 +41,7 @@ def perceptron(x, y, w, count, rand=False, alpha=1):
         if sign_result != y[col_idx]:
             has_error = True
             update += 1
-            w += alpha * np.dot(x[:, col_idx], y[col_idx]).transpose()
+            w = w + alpha * np.dot(x[:, col_idx], y[col_idx]).transpose()
 
         count[0] += 1
         range_idx += 1
